@@ -25,12 +25,7 @@
     <!-- Mods Section -->
     <section id="mods">
         <h2>Mods</h2>
-        <h3>Self Destruct Mod</h3>
-        <h4>Game: Kerbal Space Program</h4>
-        <p>This mod allows you to self-destruct (explode) your active ship. It’s useful for avoiding damage to the space center or creating cinematic videos.</p>
-        <a href="https://www.curseforge.com/kerbal/ksp-mods/self-destruct">Curseforge</a>
-        <a href="https://spacedock.info/mod/3194/Self%20Destruct#info">Spacedock</a>
-        <a href="https://github.com/jacobcargen/Self-Destruct-Mod">Source</a>
+        <div id="mods-list">Loading mods...</div>
     </section>
 
     <!-- Footer Section -->
@@ -38,5 +33,95 @@
         <p>&copy; 2024 Jacob Cargen | All Rights Reserved | <a href="privacy.html">Privacy Policy</a></p>
     </footer>
 
+    <!-- Script to Fetch Mods with mod.md -->
+    <script>
+        async function fetchMods() {
+            const modsList = document.getElementById('mods-list');
+            modsList.innerHTML = ''; // Clear loading text
+
+            try {
+                const response = await fetch('https://api.github.com/users/jacobcargen/repos');
+                const repos = await response.json();
+
+                for (const repo of repos) {
+                    const defaultBranch = repo.default_branch;
+                    const modMdUrl = `https://raw.githubusercontent.com/jacobcargen/${repo.name}/${defaultBranch}/mod.md`;
+                    const downloadsLinksUrl = `https://raw.githubusercontent.com/jacobcargen/${repo.name}/${defaultBranch}/downloads_links.txt`;
+
+                    // Check if mod.md file exists
+                    const modMdResponse = await fetch(modMdUrl);
+                    if (modMdResponse.ok) {
+                        const modText = await modMdResponse.text();
+
+                        const modDiv = document.createElement('div');
+                        modDiv.className = 'mod';
+
+                        // Mod title and GitHub link
+                        const modTitle = document.createElement('h3');
+                        modTitle.innerHTML = `<a href="${repo.html_url}" target="_blank">${repo.name}</a>`;
+                        modDiv.appendChild(modTitle);
+
+                        const modDescription = document.createElement('p');
+                        modDescription.textContent = modText;
+                        modDiv.appendChild(modDescription);
+
+                        // GitHub Pages link if it exists
+                        if (repo.has_pages) {
+                            const pagesLink = document.createElement('a');
+                            pagesLink.href = `https://${repo.owner.login}.github.io/${repo.name}`;
+                            pagesLink.target = '_blank';
+                            pagesLink.textContent = 'Mod Page';
+                            modDiv.appendChild(pagesLink);
+                            modDiv.appendChild(document.createElement('br'));
+                        }
+
+                        // Source link
+                        const sourceLink = document.createElement('a');
+                        sourceLink.href = repo.html_url;
+                        sourceLink.target = '_blank';
+                        sourceLink.textContent = 'Source';
+                        modDiv.appendChild(sourceLink);
+
+                        // Check if downloads_links.txt exists
+                        const downloadsLinksResponse = await fetch(downloadsLinksUrl);
+                        if (downloadsLinksResponse.ok) {
+                            const downloadsText = await downloadsLinksResponse.text();
+                            const downloadLinks = document.createElement('div');
+                            downloadLinks.className = 'downloads';
+
+                            // Parse each line in downloads_links.txt
+                            downloadsText.split('\n').forEach(line => {
+                                const match = line.match(/^(.+?)="(.+?)"$/);
+                                if (match) {
+                                    const [ , name, url ] = match;
+                                    const downloadLink = document.createElement('a');
+                                    downloadLink.href = url;
+                                    downloadLink.target = '_blank';
+                                    downloadLink.textContent = name;
+                                    downloadLinks.appendChild(downloadLink);
+                                    downloadLinks.appendChild(document.createElement('br'));
+                                }
+                            });
+
+                            modDiv.appendChild(downloadLinks);
+                        }
+
+                        modsList.appendChild(modDiv);
+                    }
+                }
+
+                if (modsList.innerHTML === '') {
+                    modsList.innerHTML = '<p>No mods found with mod.md.</p>';
+                }
+            } catch (error) {
+                modsList.innerHTML = '<p>Failed to load mods. Please try again later.</p>';
+                console.error('Error fetching mods:', error);
+            }
+        }
+
+        fetchMods();
+    </script>
+
 </body>
 </html>
+

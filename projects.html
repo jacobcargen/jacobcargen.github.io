@@ -25,9 +25,7 @@
     <!-- Projects Section -->
     <section id="projects">
         <h2>Projects</h2>
-        <h3>South Station</h3>
-        <h4>Details Coming Soon</h4>
-        <a href="https://github.com/jacobcargen/SouthStation">Project Page</a>
+        <div id="projects-list">Loading projects...</div>
     </section>
 
     <!-- Footer Section -->
@@ -35,5 +33,95 @@
         <p>&copy; 2024 Jacob Cargen | All Rights Reserved | <a href="privacy.html">Privacy Policy</a></p>
     </footer>
 
+    <!-- Script to Fetch Projects with project.md -->
+    <script>
+        async function fetchProjects() {
+            const projectsList = document.getElementById('projects-list');
+            projectsList.innerHTML = ''; // Clear loading text
+
+            try {
+                const response = await fetch('https://api.github.com/users/jacobcargen/repos');
+                const repos = await response.json();
+
+                for (const repo of repos) {
+                    const defaultBranch = repo.default_branch;
+                    const projectMdUrl = `https://raw.githubusercontent.com/jacobcargen/${repo.name}/${defaultBranch}/project.md`;
+                    const downloadsLinksUrl = `https://raw.githubusercontent.com/jacobcargen/${repo.name}/${defaultBranch}/downloads_links.txt`;
+
+                    // Check if project.md file exists
+                    const projectMdResponse = await fetch(projectMdUrl);
+                    if (projectMdResponse.ok) {
+                        const projectText = await projectMdResponse.text();
+
+                        const projectDiv = document.createElement('div');
+                        projectDiv.className = 'project';
+
+                        // Project title and GitHub link
+                        const projectTitle = document.createElement('h3');
+                        projectTitle.innerHTML = `<a href="${repo.html_url}" target="_blank">${repo.name}</a>`;
+                        projectDiv.appendChild(projectTitle);
+
+                        const projectDescription = document.createElement('p');
+                        projectDescription.textContent = projectText;
+                        projectDiv.appendChild(projectDescription);
+
+                        // GitHub Pages link if it exists
+                        if (repo.has_pages) {
+                            const pagesLink = document.createElement('a');
+                            pagesLink.href = `https://${repo.owner.login}.github.io/${repo.name}`;
+                            pagesLink.target = '_blank';
+                            pagesLink.textContent = 'Project Page';
+                            projectDiv.appendChild(pagesLink);
+                            projectDiv.appendChild(document.createElement('br'));
+                        }
+
+                        // Source link
+                        const sourceLink = document.createElement('a');
+                        sourceLink.href = repo.html_url;
+                        sourceLink.target = '_blank';
+                        sourceLink.textContent = 'Source';
+                        projectDiv.appendChild(sourceLink);
+
+                        // Check if downloads_links.txt exists
+                        const downloadsLinksResponse = await fetch(downloadsLinksUrl);
+                        if (downloadsLinksResponse.ok) {
+                            const downloadsText = await downloadsLinksResponse.text();
+                            const downloadLinks = document.createElement('div');
+                            downloadLinks.className = 'downloads';
+
+                            // Parse each line in downloads_links.txt
+                            downloadsText.split('\n').forEach(line => {
+                                const match = line.match(/^(.+?)="(.+?)"$/);
+                                if (match) {
+                                    const [ , name, url ] = match;
+                                    const downloadLink = document.createElement('a');
+                                    downloadLink.href = url;
+                                    downloadLink.target = '_blank';
+                                    downloadLink.textContent = name;
+                                    downloadLinks.appendChild(downloadLink);
+                                    downloadLinks.appendChild(document.createElement('br'));
+                                }
+                            });
+
+                            projectDiv.appendChild(downloadLinks);
+                        }
+
+                        projectsList.appendChild(projectDiv);
+                    }
+                }
+
+                if (projectsList.innerHTML === '') {
+                    projectsList.innerHTML = '<p>No projects found with project.md.</p>';
+                }
+            } catch (error) {
+                projectsList.innerHTML = '<p>Failed to load projects. Please try again later.</p>';
+                console.error('Error fetching projects:', error);
+            }
+        }
+
+        fetchProjects();
+    </script>
+
 </body>
 </html>
+
