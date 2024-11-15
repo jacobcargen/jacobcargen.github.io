@@ -30,6 +30,12 @@
         <button id="surprise-me-btn">Surprise Me</button>
     </section>
 
+    <!-- News Section for Latest Releases -->
+    <section id="news">
+        <h2>RECENT RELEASES</h2>
+        <div id="release-info">Loading latest releases...</div>
+    </section>
+
     <!-- Footer Section -->
     <footer>
         <p>&copy; 2024 Jacob Cargen | All Rights Reserved | <a href="privacy.html">Privacy Policy</a></p>
@@ -72,6 +78,83 @@
                 console.error('Failed to fetch repositories:', error);
             }
         });
+
+        // Fetch latest releases from repositories with project.md or mod.md
+        async function fetchLatestReleases() {
+            try {
+                const reposResponse = await fetch('https://api.github.com/users/jacobcargen/repos');
+                const repos = await reposResponse.json();
+                const releaseInfo = document.getElementById('release-info');
+                releaseInfo.innerHTML = ''; // Clear loading text
+
+                let releaseFound = 0; // Track number of releases displayed
+                const releasesData = []; // Store releases to sort later
+
+                // Loop through all repositories
+                for (let repo of repos) {
+                    // Check if the repo contains project.md or mod.md
+                    const contentsResponse = await fetch(`https://api.github.com/repos/jacobcargen/${repo.name}/contents`);
+                    const contents = await contentsResponse.json();
+
+                    const containsValidFile = contents.some(file => 
+                        file.name === 'project.md' || file.name === 'mod.md'
+                    );
+
+                    // If repo contains valid files, fetch releases
+                    if (containsValidFile) {
+                        const releasesResponse = await fetch(`https://api.github.com/repos/jacobcargen/${repo.name}/releases`);
+                        const releases = await releasesResponse.json();
+
+                        if (releases.length > 0) {
+                            const latestRelease = releases[0];
+                            const shortChangelog = latestRelease.body ? latestRelease.body.split('\n')[0] : "No details available.";
+
+                            releasesData.push({
+                                repoName: repo.name,
+                                tagName: latestRelease.tag_name,
+                                releaseUrl: latestRelease.html_url,
+                                releaseDate: latestRelease.published_at,
+                                changelog: shortChangelog
+                            });
+
+                            releaseFound++;
+                        }
+                    }
+
+                    // Stop once we've found 4 releases
+                    if (releaseFound >= 4) break;
+                }
+
+                // Sort releases by date (most recent first)
+                releasesData.sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate));
+
+                // Display the 4 most recent releases
+                for (let release of releasesData.slice(0, 4)) {
+                    const releaseHTML = `
+                        <div class="release">
+                            <h3><a href="${release.releaseUrl}" target="_blank">${release.repoName} - ${release.tagName}</a></h3>
+                            <p>Release Date: ${release.releaseDate.split('T')[0]}</p>
+                            <p>${release.changelog}</p>
+                            <p><a href="${release.releaseUrl}" target="_blank">Full Changelog</a></p>
+                        </div>
+                    `;
+                    releaseInfo.innerHTML += releaseHTML;
+                }
+
+                // If no releases found, display a message
+                if (releaseFound === 0) {
+                    releaseInfo.innerHTML = "<p>No recent releases found for your repositories.</p>";
+                }
+
+            } catch (error) {
+                console.error('Failed to fetch releases:', error);
+                const releaseInfo = document.getElementById('release-info');
+                releaseInfo.innerHTML = "<p>There was an error fetching the release information.</p>";
+            }
+        }
+
+        // Fetch the latest releases when the page loads
+        fetchLatestReleases();
     </script>
 </body>
 </html>

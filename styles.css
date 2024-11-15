@@ -199,6 +199,29 @@ footer a:hover {
     text-decoration: underline;
 }
 
+.release {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.release h3 {
+    font-size: 1.2em;
+}
+
+.release p {
+    margin: 5px 0;
+}
+
+.release a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.release a:hover {
+    text-decoration: underline;
+}
+
+
 /* Animations */
 @keyframes fadeIn {
     from {
