@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jargen - Home</title>
     <link rel="stylesheet" href="styles.css"> <!-- Link to your main CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script> <!-- Add marked.js for markdown to HTML conversion -->
 </head>
 <body>
 
@@ -16,14 +17,17 @@
     <!-- Navigation Menu -->
     <nav>
         <a href="index.html">Home</a>
-		<a href="https://github.com/jacobcargen">GitHub</a>
+        <a href="https://github.com/jacobcargen">GitHub</a>
         <a href="projects.html">Projects</a>
         <a href="mods.html">Mods</a>
         <a href="astrophotography.html">Astrophotography</a>
     </nav>
 
     <section id="welcome">
-            <div id="readme">Loading description...</div>
+        <div id="readme">Loading description...</div>
+        
+        <!-- Surprise Me Button -->
+        <button id="surprise-me-btn">Surprise Me</button>
     </section>
 
     <!-- Footer Section -->
@@ -44,8 +48,7 @@
                 const text = await response.text();
                 const readme = document.getElementById('readme');
                 if (readme) {
-                    readme.innerHTML = '';  // Clear loading text
-                    readme.innerHTML = text;
+                    readme.innerHTML = marked.parse(text); // Use marked.js to convert markdown to HTML
                 } else {
                     console.error('Element with id "readme" not found');
                 }
@@ -54,7 +57,21 @@
             }
         }
 
+        // Fetch the README when the page loads
         fetchReadme();
+
+        // Surprise Me functionality
+        document.getElementById('surprise-me-btn').addEventListener('click', async () => {
+            try {
+                const reposResponse = await fetch('https://api.github.com/users/jacobcargen/repos');
+                const repos = await reposResponse.json();
+                const randomRepo = repos[Math.floor(Math.random() * repos.length)];
+                const repoUrl = `https://github.com/jacobcargen/${randomRepo.name}`;
+                window.location.href = repoUrl; // Redirect to the random repo
+            } catch (error) {
+                console.error('Failed to fetch repositories:', error);
+            }
+        });
     </script>
 </body>
 </html>
