@@ -10,13 +10,13 @@
 
     <!-- Header Section -->
     <header>
-        <h1>Welcome to My Website</h1>
+        <h1>Jargen - Projects</h1>
     </header>
 
     <!-- Navigation Menu -->
     <nav>
         <a href="index.html">Home</a>
-        <a href="about.html">About</a>
+		<a href="https://github.com/jacobcargen">GitHub</a>
         <a href="projects.html">Projects</a>
         <a href="mods.html">Mods</a>
         <a href="astrophotography.html">Astrophotography</a>
@@ -58,7 +58,7 @@
 
                         // Project title and GitHub link
                         const projectTitle = document.createElement('h3');
-                        projectTitle.innerHTML = `<a href="${repo.html_url}" target="_blank">${repo.name}</a>`;
+                        projectTitle.innerHTML = `<a>${repo.name}</a>`;
                         projectDiv.appendChild(projectTitle);
 
                         const projectDescription = document.createElement('p');

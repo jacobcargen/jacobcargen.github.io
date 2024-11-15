@@ -10,13 +10,13 @@
 
     <!-- Header Section -->
     <header>
-        <h1>Welcome to My Website</h1>
+        <h1>Jargen - Mods</h1>
     </header>
 
     <!-- Navigation Menu -->
     <nav>
         <a href="index.html">Home</a>
-        <a href="about.html">About</a>
+		<a href="https://github.com/jacobcargen">GitHub</a>
         <a href="projects.html">Projects</a>
         <a href="mods.html">Mods</a>
         <a href="astrophotography.html">Astrophotography</a>
@@ -58,7 +58,7 @@
 
                         // Mod title and GitHub link
                         const modTitle = document.createElement('h3');
-                        modTitle.innerHTML = `<a href="${repo.html_url}" target="_blank">${repo.name}</a>`;
+                        modTitle.innerHTML = `<a>${repo.name}</a>`;
                         modDiv.appendChild(modTitle);
 
                         const modDescription = document.createElement('p');

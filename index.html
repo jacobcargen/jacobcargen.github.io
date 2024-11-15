@@ -10,21 +10,20 @@
 
     <!-- Header Section -->
     <header>
-        <h1>Welcome to My Website</h1>
+        <h1>Jargen - Home</h1>
     </header>
 
     <!-- Navigation Menu -->
     <nav>
         <a href="index.html">Home</a>
-        <a href="about.html">About</a>
+		<a href="https://github.com/jacobcargen">GitHub</a>
         <a href="projects.html">Projects</a>
         <a href="mods.html">Mods</a>
         <a href="astrophotography.html">Astrophotography</a>
     </nav>
 
     <section id="welcome">
-        <h2>Welcome to the Homepage</h2>
-        <p>This is a brief introduction to the website. Use the menu to explore.</p>
+            <div id="readme">Loading description...</div>
     </section>
 
     <!-- Footer Section -->
@@ -32,5 +31,30 @@
         <p>&copy; 2024 Jacob Cargen | All Rights Reserved | <a href="privacy.html">Privacy Policy</a></p>
     </footer>
 
+    <script>
+        async function fetchReadme() {
+            const defaultBranch = 'main'; // Ensure this is the correct branch name
+            const readmeUrl = `https://raw.githubusercontent.com/jacobcargen/jacobcargen/${defaultBranch}/README.md`;
+            
+            try {
+                const response = await fetch(readmeUrl);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const text = await response.text();
+                const readme = document.getElementById('readme');
+                if (readme) {
+                    readme.innerHTML = '';  // Clear loading text
+                    readme.innerHTML = text;
+                } else {
+                    console.error('Element with id "readme" not found');
+                }
+            } catch (error) {
+                console.error('Failed to fetch README:', error);
+            }
+        }
+
+        fetchReadme();
+    </script>
 </body>
 </html>
