@@ -1,45 +1,48 @@
 /* General Styles */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
+    background-color: #f0f4f8; /* Lighter, fresher background */
     color: #333;
-    line-height: 1.6;
+    line-height: 1.8;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     box-sizing: border-box;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Header Styles */
 header {
-    background-color: #2c3e50;
+    background: linear-gradient(135deg, #FF6F61, #FFD200, #FF0033);
     color: white;
-    padding: 20px 0;
+    padding: 30px 30px;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-image: linear-gradient(to bottom right, #2c3e50, #34495e);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
     animation: fadeIn 1.5s ease-in-out;
-    width: 100%;
 }
 
 header h1 {
     margin: 0;
-    font-size: 1.5rem;
-    letter-spacing: 1px;
+    font-size: 3rem;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    font-weight: bold;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    font-weight: 700;
+    text-shadow: 3px 3px 12px rgba(0, 0, 0, 0.2);
+    animation: slideInFromLeft 1s ease-out;
 }
 
 /* Navigation Menu */
 nav {
-    background-color: #34495e;
+    background: linear-gradient(45deg, #2D3A4B, #4C5C6A);
     text-align: center;
-    padding: 15px 0;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    width: 100%;
+    padding: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 10;
 }
 
 nav a {
@@ -47,56 +50,89 @@ nav a {
     padding: 12px 25px;
     text-decoration: none;
     font-size: 1.2rem;
-    margin: 0 15px;
-    border-radius: 25px;
-    transition: all 0.3s ease;
+    margin: 0 20px;
+    border-radius: 30px;
+    position: relative;
     display: inline-block;
-    border: 1px solid transparent;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+nav a::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #1abc9c;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
 }
 
 nav a:hover {
-    background-color: #1abc9c;
-    color: white;
-    transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(26, 188, 156, 0.3);
-    border-color: #1abc9c;
+    color: #1abc9c;
+    transform: scale(1.1);
+}
+
+nav a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
 }
 
 /* Section Styles */
 section {
-    padding: 50px 30px;
-    margin: 30px auto;
+    padding: 60px 30px;
+    margin: 50px auto;
     background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 100%;
+    max-width: 1100px;
     box-sizing: border-box;
-    transition: transform 0.4s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 section:hover {
-    transform: translateY(-8px);
+    transform: translateY(-15px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
 section h2 {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     color: #2c3e50;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     text-align: center;
     text-transform: uppercase;
-    letter-spacing: 3px;
+    letter-spacing: 5px;
     font-weight: bold;
-    border-bottom: 2px solid #1abc9c;
-    padding-bottom: 8px;
+    position: relative;
+}
+
+section h2::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50%;
+    height: 2px;
+    background-color: #FF0033;
+    transition: width 0.3s ease;
+}
+
+section h2:hover::before {
+    width: 100%;
 }
 
 section p {
     font-size: 1.1rem;
     color: #555;
     line-height: 1.8;
-    margin-bottom: 18px;
     text-align: justify;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 /* List Styles */
@@ -104,43 +140,48 @@ ul {
     list-style-type: none;
     padding: 0;
     font-size: 1.2rem;
-    margin: 0;
+    margin: 20px 0;
 }
 
 ul li {
-    margin-bottom: 12px;
+    margin-bottom: 18px;
     display: flex;
     align-items: center;
+    position: relative;
+    transition: color 0.3s ease;
 }
 
 ul li::before {
     content: '✔';
-    color: #2ecc71;
-    margin-right: 10px;
-    font-size: 1.4rem;
+    color: #1abc9c;
+    margin-right: 15px;
+    font-size: 1.5rem;
+}
+
+ul li:hover {
+    color: #1abc9c;
 }
 
 /* Astrophotography Gallery */
 .astro-gallery {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    gap: 25px;
     margin-top: 40px;
-    width: 100%;
-    box-sizing: border-box;
+    padding-bottom: 50px;
 }
 
 .astro-photo {
     position: relative;
     overflow: hidden;
-    border-radius: 12px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .astro-photo:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.15);
+    transform: scale(1.1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
 }
 
 .astro-photo img {
@@ -150,37 +191,43 @@ ul li::before {
 }
 
 .astro-photo:hover img {
-    transform: scale(1.08);
+    transform: scale(1.05);
 }
 
 .photo-info {
     position: absolute;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.6);
     color: white;
     width: 100%;
-    padding: 12px;
-    font-size: 1.2rem;
+    padding: 20px;
+    font-size: 1.3rem;
     text-align: center;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.astro-photo:hover .photo-info {
+    opacity: 1;
 }
 
 .photo-info h4 {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     margin: 0;
 }
 
 /* Footer Styles */
 footer {
-    background-color: #2c3e50;
+    background: #2C3E50;
     color: white;
     text-align: center;
-    padding: 20px 0;
+    padding: 20px 30px;
     margin-top: auto;
     font-size: 1.1rem;
-    box-shadow: 0 -3px 7px rgba(0, 0, 0, 0.1);
-    width: 100%;
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
 footer p {
@@ -189,27 +236,28 @@ footer p {
 }
 
 footer a {
-    color: #1abc9c;
+    color: #FF0033;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 footer a:hover {
-    color: #ecf0f1;
+    color: #1abc9c;
     text-decoration: underline;
 }
 
+/* Release Section */
 .release {
     border-bottom: 1px solid #ddd;
-    padding: 10px 0;
+    padding: 20px 0;
 }
 
 .release h3 {
-    font-size: 1.2em;
+    font-size: 1.4rem;
 }
 
 .release p {
-    margin: 5px 0;
+    margin: 10px 0;
 }
 
 .release a {
@@ -221,7 +269,6 @@ footer a:hover {
     text-decoration: underline;
 }
 
-
 /* Animations */
 @keyframes fadeIn {
     from {
@@ -232,14 +279,13 @@ footer a:hover {
     }
 }
 
-@keyframes fadeInUp {
+@keyframes slideInFromLeft {
     from {
+        transform: translateX(-50px);
         opacity: 0;
-        transform: translateY(15px);
     }
     to {
+        transform: translateX(0);
         opacity: 1;
-        transform: translateY(0);
     }
 }
-
