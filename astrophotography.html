@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jargen - Astrophotography</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/megajs@latest/dist/main.browser-es5.js"></script>
 </head>
 <body>
 
@@ -26,80 +25,52 @@
     <!-- Astrophotography Section -->
     <section id="astrophotography">
         <h2>Astrophotography</h2>
-        <div id="loading-message">Loading photos from MEGA...</div>
+        <p style="text-align: center; margin-bottom: 30px;">
+            <a href="https://mega.nz/folder/38wxDI7L#OmdDV4UiESO9LEJ9lyFElw" target="_blank" style="color: #FF0033; font-size: 1.2rem; text-decoration: none; border: 2px solid #FF0033; padding: 10px 20px; border-radius: 5px; display: inline-block; transition: all 0.3s;">
+                📁 View More on MEGA
+            </a>
+        </p>
         <div class="astro-gallery" id="astro-gallery">
-            <!-- Photos will be dynamically loaded here -->
+            <!-- Photos will be dynamically loaded from photos.json -->
         </div>
     </section>
 
     <script>
-        // MEGA folder URL: https://mega.nz/folder/38wxDI7L#OmdDV4UiESO9LEJ9lyFElw
-        const MEGA_FOLDER_ID = '38wxDI7L';
-        const MEGA_FOLDER_KEY = 'OmdDV4UiESO9LEJ9lyFElw';
-
-        async function loadMegaPhotos() {
+        // Dynamically load photos from photos.json
+        async function loadPhotos() {
             const gallery = document.getElementById('astro-gallery');
-            const loadingMessage = document.getElementById('loading-message');
             
             try {
-                // Parse the MEGA folder link
-                const folderUrl = `https://mega.nz/folder/${MEGA_FOLDER_ID}#${MEGA_FOLDER_KEY}`;
-                const folder = mega.File.fromURL(folderUrl);
+                const response = await fetch('photos.json');
+                const photos = await response.json();
                 
-                // Load the folder
-                await folder.loadAttributes();
-                
-                // Get all files in the folder
-                const files = [];
-                for await (const file of folder.children) {
-                    // Only process image files
-                    if (file.name && /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name)) {
-                        files.push(file);
-                    }
-                }
-                
-                // Sort files by name
-                files.sort((a, b) => a.name.localeCompare(b.name));
-                
-                // Clear loading message
-                loadingMessage.style.display = 'none';
-                
-                // Create photo elements
-                for (const file of files) {
+                photos.forEach(photo => {
                     const photoDiv = document.createElement('div');
                     photoDiv.className = 'astro-photo';
                     
-                    // Get download link
-                    const link = await file.link();
-                    
-                    // Create image element
                     const img = document.createElement('img');
-                    img.src = link;
-                    img.alt = file.name;
-                    img.loading = 'lazy'; // Lazy load images for better performance
+                    img.src = photo.file;
+                    img.alt = photo.name;
+                    img.loading = 'lazy';
                     
-                    // Create photo info
                     const photoInfo = document.createElement('div');
                     photoInfo.className = 'photo-info';
                     const photoName = document.createElement('p');
-                    // Remove file extension and format name
-                    photoName.textContent = file.name.replace(/\.[^/.]+$/, '').replace(/_/g, ' ');
+                    photoName.textContent = photo.name;
                     photoInfo.appendChild(photoName);
                     
                     photoDiv.appendChild(img);
                     photoDiv.appendChild(photoInfo);
                     gallery.appendChild(photoDiv);
-                }
-                
+                });
             } catch (error) {
-                console.error('Error loading MEGA photos:', error);
-                loadingMessage.textContent = 'Error loading photos. Please try again later.';
-                loadingMessage.style.color = '#ff6b6b';
+                console.error('Error loading photos:', error);
+                gallery.innerHTML = '<p style="text-align: center; color: #ff6b6b;">Error loading photos. Please try again later.</p>';
             }
         }
         
         // Load photos when page loads
-        window.addEventListener('DOMContentLoaded', loadMegaPhotos);
+        window.addEventListener('DOMContentLoaded', loadPhotos);
     </script>
 
     <!-- Footer Section -->
