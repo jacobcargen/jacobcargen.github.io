@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jargen - Astrophotography</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/megajs@latest/dist/main.browser-es5.js"></script>
 </head>
 <body>
 
@@ -25,73 +26,81 @@
     <!-- Astrophotography Section -->
     <section id="astrophotography">
         <h2>Astrophotography</h2>
-        <div class="astro-gallery">
-			<!--  -->
-			<!-- Photo -->
-            <div class="astro-photo">
-                <img src="Astrophotography/m101_area.jpg" alt="Cannot load">
-				<div class="photo-info">
-					<p>Deepsky M101</p>
-				</div>
-            </div>
-			<!-- Photo -->
-            <div class="astro-photo">
-                <img src="Astrophotography/JRC_0127.jpg" alt="Cannot load">
-				<div class="photo-info">
-					<p>North American Nebula</p>
-				</div>
-            </div>
-            <!-- Photo -->
-            <div class="astro-photo">
-                <img src="Astrophotography/JRC_0079.jpg" alt="Cannot load">
-				<div class="photo-info">
-					<p>Moon</p>
-				</div>
-            </div>
-			<!-- Photo -->
-            <div class="astro-photo">
-                <img src="Astrophotography/M4_062422.jpg" alt="Cannot load">
-				<div class="photo-info">
-					<p>M4</p>
-				</div>
-            </div>
-			<!-- Photo -->
-            <div class="astro-photo">
-                <img src="Astrophotography/Milkyway1.jpg" alt="Cannot load">
-				<div class="photo-info">
-					<p>Milkyway</p>
-				</div>
-            </div>
-			<!-- Photo -->
-            <div class="astro-photo">
-                <img src="Astrophotography/SuperlongExposure.jpg" alt="Cannot load">
-				<div class="photo-info">
-					<p>Star Trails</p>
-				</div>
-            </div>
-			<!-- Photo -->
-            <div class="astro-photo">
-                <img src="Astrophotography/JRC_0211.JPG" alt="Cannot load">
-				<div class="photo-info">
-					<p>Northern Lights</p>
-				</div>
-            </div>
-			<!-- Photo -->
-            <div class="astro-photo">
-                <img src="Astrophotography/IPC_2022-06-10.20.49.16.1660.jpg" alt="Cannot load">
-				<div class="photo-info">
-					<p>Moon Zoomed</p>
-				</div>
-            </div>
-			<!-- Photo -->
-            <div class="astro-photo">
-                <img src="Astrophotography/Pleiades.jpg" alt="Cannot load">
-				<div class="photo-info">
-					<p>Pleiades</p>
-				</div>
-            </div>
+        <div id="loading-message">Loading photos from MEGA...</div>
+        <div class="astro-gallery" id="astro-gallery">
+            <!-- Photos will be dynamically loaded here -->
         </div>
     </section>
+
+    <script>
+        // MEGA folder URL: https://mega.nz/folder/38wxDI7L#OmdDV4UiESO9LEJ9lyFElw
+        const MEGA_FOLDER_ID = '38wxDI7L';
+        const MEGA_FOLDER_KEY = 'OmdDV4UiESO9LEJ9lyFElw';
+
+        async function loadMegaPhotos() {
+            const gallery = document.getElementById('astro-gallery');
+            const loadingMessage = document.getElementById('loading-message');
+            
+            try {
+                // Parse the MEGA folder link
+                const folderUrl = `https://mega.nz/folder/${MEGA_FOLDER_ID}#${MEGA_FOLDER_KEY}`;
+                const folder = mega.File.fromURL(folderUrl);
+                
+                // Load the folder
+                await folder.loadAttributes();
+                
+                // Get all files in the folder
+                const files = [];
+                for await (const file of folder.children) {
+                    // Only process image files
+                    if (file.name && /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name)) {
+                        files.push(file);
+                    }
+                }
+                
+                // Sort files by name
+                files.sort((a, b) => a.name.localeCompare(b.name));
+                
+                // Clear loading message
+                loadingMessage.style.display = 'none';
+                
+                // Create photo elements
+                for (const file of files) {
+                    const photoDiv = document.createElement('div');
+                    photoDiv.className = 'astro-photo';
+                    
+                    // Get download link
+                    const link = await file.link();
+                    
+                    // Create image element
+                    const img = document.createElement('img');
+                    img.src = link;
+                    img.alt = file.name;
+                    img.loading = 'lazy'; // Lazy load images for better performance
+                    
+                    // Create photo info
+                    const photoInfo = document.createElement('div');
+                    photoInfo.className = 'photo-info';
+                    const photoName = document.createElement('p');
+                    // Remove file extension and format name
+                    photoName.textContent = file.name.replace(/\.[^/.]+$/, '').replace(/_/g, ' ');
+                    photoInfo.appendChild(photoName);
+                    
+                    photoDiv.appendChild(img);
+                    photoDiv.appendChild(photoInfo);
+                    gallery.appendChild(photoDiv);
+                }
+                
+            } catch (error) {
+                console.error('Error loading MEGA photos:', error);
+                loadingMessage.textContent = 'Error loading photos. Please try again later.';
+                loadingMessage.style.color = '#ff6b6b';
+            }
+        }
+        
+        // Load photos when page loads
+        window.addEventListener('DOMContentLoaded', loadMegaPhotos);
+    </script>
 
     <!-- Footer Section -->
     <footer>

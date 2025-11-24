@@ -162,6 +162,16 @@ ul li:hover {
     color: #1abc9c;
 }
 
+/* Loading Message */
+#loading-message {
+    text-align: center;
+    font-size: 1.3rem;
+    color: #2c3e50;
+    padding: 30px;
+    margin: 20px 0;
+    font-weight: 500;
+}
+
 /* Astrophotography Gallery */
 .astro-gallery {
     display: grid;
