@@ -1,38 +1,10 @@
 [
   {
-    "file": "Astrophotography/m101_area.jpg",
+    "url": "https://example.com/photo1.jpg",
     "name": "Deepsky M101"
   },
   {
-    "file": "Astrophotography/JRC_0127.jpg",
+    "url": "https://example.com/photo2.jpg",
     "name": "North American Nebula"
-  },
-  {
-    "file": "Astrophotography/JRC_0079.jpg",
-    "name": "Moon"
-  },
-  {
-    "file": "Astrophotography/M4_062422.jpg",
-    "name": "M4"
-  },
-  {
-    "file": "Astrophotography/Milkyway1.jpg",
-    "name": "Milkyway"
-  },
-  {
-    "file": "Astrophotography/SuperlongExposure.jpg",
-    "name": "Star Trails"
-  },
-  {
-    "file": "Astrophotography/JRC_0211.JPG",
-    "name": "Northern Lights"
-  },
-  {
-    "file": "Astrophotography/IPC_2022-06-10.20.49.16.1660.jpg",
-    "name": "Moon Zoomed"
-  },
-  {
-    "file": "Astrophotography/Pleiades.jpg",
-    "name": "Pleiades"
   }
 ]

@@ -49,9 +49,10 @@
                     photoDiv.className = 'astro-photo';
                     
                     const img = document.createElement('img');
-                    img.src = photo.file;
+                    img.src = photo.url;
                     img.alt = photo.name;
                     img.loading = 'lazy';
+                    img.crossOrigin = 'anonymous'; // For external images
                     
                     const photoInfo = document.createElement('div');
                     photoInfo.className = 'photo-info';

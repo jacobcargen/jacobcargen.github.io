@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jargen - Projects</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
 
@@ -61,8 +62,9 @@
                         projectTitle.innerHTML = `<a>${repo.name}</a>`;
                         projectDiv.appendChild(projectTitle);
 
-                        const projectDescription = document.createElement('p');
-                        projectDescription.textContent = projectText;
+                        const projectDescription = document.createElement('div');
+                        projectDescription.className = 'markdown-content';
+                        projectDescription.innerHTML = marked.parse(projectText);
                         projectDiv.appendChild(projectDescription);
 
                         // GitHub Pages link if it exists

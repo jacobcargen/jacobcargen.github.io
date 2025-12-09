@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jargen - Mods</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
 
@@ -61,8 +62,9 @@
                         modTitle.innerHTML = `<a>${repo.name}</a>`;
                         modDiv.appendChild(modTitle);
 
-                        const modDescription = document.createElement('p');
-                        modDescription.textContent = modText;
+                        const modDescription = document.createElement('div');
+                        modDescription.className = 'markdown-content';
+                        modDescription.innerHTML = marked.parse(modText);
                         modDiv.appendChild(modDescription);
 
                         // GitHub Pages link if it exists
