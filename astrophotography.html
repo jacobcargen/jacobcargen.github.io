@@ -4,13 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jargen - Astrophotography</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/sketchy/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #0a0a0a !important;
+            color: #e0e0e0 !important;
+        }
+        header {
+            background-color: #1a1a1a !important;
+        }
+        nav {
+            background-color: #1a1a1a !important;
+            border-bottom: 1px solid #333 !important;
+        }
+        nav a {
+            color: #e0e0e0 !important;
+        }
+        nav a:hover {
+            background-color: #2a2a2a !important;
+        }
+        section {
+            background-color: #1a1a1a !important;
+            color: #e0e0e0 !important;
+        }
+        .card {
+            background-color: #222 !important;
+            border-color: #333 !important;
+            color: #e0e0e0 !important;
+        }
+        .card-body h5 {
+            color: #e0e0e0 !important;
+        }
+        footer {
+            background-color: #1a1a1a !important;
+        }
+    </style>
 </head>
 <body>
 
     <!-- Header Section -->
     <header>
-        <h1>Jargen - Astrophotography</h1>
+        <div style="font-size: 0.9rem; margin-bottom: 0.5rem; opacity: 0.8;">
+            <a href="index.html" style="color: white; text-decoration: none;">Jargen</a> > Astrophotography
+        </div>
+        <h1>Astrophotography</h1>
     </header>
 
     <!-- Navigation Menu -->
@@ -18,65 +56,136 @@
         <a href="index.html">Home</a>
 		<a href="https://github.com/jacobcargen">GitHub</a>
         <a href="projects.html">Projects</a>
-        <a href="mods.html">Mods</a>
         <a href="astrophotography.html">Astrophotography</a>
     </nav>
 
     <!-- Astrophotography Section -->
     <section id="astrophotography">
         <h2>Astrophotography</h2>
-        <p style="text-align: center; margin-bottom: 30px;">
-            <a href="https://mega.nz/folder/38wxDI7L#OmdDV4UiESO9LEJ9lyFElw" target="_blank" style="color: #FF0033; font-size: 1.2rem; text-decoration: none; border: 2px solid #FF0033; padding: 10px 20px; border-radius: 5px; display: inline-block; transition: all 0.3s;">
-                📁 View More on MEGA
+        
+        <!-- Equipment Section -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h3 class="card-title">Current Setup / Gear</h3>
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <h5>Telescopes</h5>
+                        <ul class="list-unstyled">
+                            <li>Astro-Tech AT70ED</li>
+                            <li>Meade Auto Star ETX 60</li>
+                            <li>Custom Made 8in Dobsonian</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <h5>Mounts</h5>
+                        <ul class="list-unstyled">
+                            <li>iOptron SkyGuider Pro</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <h5>Cameras</h5>
+                        <ul class="list-unstyled">
+                            <li>Nikon D5600 (Astro-modified)</li>
+                            <li>SVBONY SV105</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <h5>Software</h5>
+                        <ul class="list-unstyled">
+                            <li>RawTherapee</li>
+                            <li>GIMP</li>
+                            <li>DeepSkyStacker</li>
+                            <li>SharpCap</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p style="text-align: center; margin-bottom: 2rem;">
+            <a href="https://mega.nz/folder/38wxDI7L#OmdDV4UiESO9LEJ9lyFElw" target="_blank" class="btn btn-primary btn-lg">
+                📁 View Full Gallery on MEGA
             </a>
         </p>
-        <div class="astro-gallery" id="astro-gallery">
-            <!-- Photos will be dynamically loaded from photos.json -->
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <img src="Astrophotography/m101_area.jpg" class="card-img-top" alt="Deepsky M101">
+                    <div class="card-body">
+                        <h5 class="card-title">Deepsky M101</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <img src="Astrophotography/JRC_0127.jpg" class="card-img-top" alt="North American Nebula">
+                    <div class="card-body">
+                        <h5 class="card-title">North American Nebula</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <img src="Astrophotography/JRC_0079.jpg" class="card-img-top" alt="Moon">
+                    <div class="card-body">
+                        <h5 class="card-title">Moon</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <img src="Astrophotography/M4_062422.jpg" class="card-img-top" alt="M4">
+                    <div class="card-body">
+                        <h5 class="card-title">M4</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <img src="Astrophotography/Milkyway1.jpg" class="card-img-top" alt="Milkyway">
+                    <div class="card-body">
+                        <h5 class="card-title">Milkyway</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <img src="Astrophotography/SuperlongExposure.jpg" class="card-img-top" alt="Star Trails">
+                    <div class="card-body">
+                        <h5 class="card-title">Star Trails</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <img src="Astrophotography/JRC_0211.JPG" class="card-img-top" alt="Northern Lights">
+                    <div class="card-body">
+                        <h5 class="card-title">Northern Lights</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <img src="Astrophotography/IPC_2022-06-10.20.49.16.1660.jpg" class="card-img-top" alt="Moon Zoomed">
+                    <div class="card-body">
+                        <h5 class="card-title">Moon Zoomed</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <img src="Astrophotography/Pleiades.jpg" class="card-img-top" alt="Pleiades">
+                    <div class="card-body">
+                        <h5 class="card-title">Pleiades</h5>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <script>
-        // Dynamically load photos from photos.json
-        async function loadPhotos() {
-            const gallery = document.getElementById('astro-gallery');
-            
-            try {
-                const response = await fetch('photos.json');
-                const photos = await response.json();
-                
-                photos.forEach(photo => {
-                    const photoDiv = document.createElement('div');
-                    photoDiv.className = 'astro-photo';
-                    
-                    const img = document.createElement('img');
-                    img.src = photo.url;
-                    img.alt = photo.name;
-                    img.loading = 'lazy';
-                    img.crossOrigin = 'anonymous'; // For external images
-                    
-                    const photoInfo = document.createElement('div');
-                    photoInfo.className = 'photo-info';
-                    const photoName = document.createElement('p');
-                    photoName.textContent = photo.name;
-                    photoInfo.appendChild(photoName);
-                    
-                    photoDiv.appendChild(img);
-                    photoDiv.appendChild(photoInfo);
-                    gallery.appendChild(photoDiv);
-                });
-            } catch (error) {
-                console.error('Error loading photos:', error);
-                gallery.innerHTML = '<p style="text-align: center; color: #ff6b6b;">Error loading photos. Please try again later.</p>';
-            }
-        }
-        
-        // Load photos when page loads
-        window.addEventListener('DOMContentLoaded', loadPhotos);
-    </script>
-
     <!-- Footer Section -->
     <footer>
-        <p>&copy; 2024 Jacob Cargen | All Rights Reserved | <a href="privacy.html">Privacy Policy</a></p>
+        <p>&copy; 2025 Jacob Cargen | All Rights Reserved | <a href="privacy.html">Privacy Policy</a></p>
     </footer>
 
 </body>
