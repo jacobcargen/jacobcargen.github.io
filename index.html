@@ -31,6 +31,11 @@
         <button id="surprise-me-btn" >Surprise Me</button>
         <div id="dice-result" style="text-align: center; font-size: 4rem; margin-top: 1rem; min-height: 5rem;"></div>
     </section>
+	
+	<section id="featured-projects">
+        <h2>FEATURED PROJECTS</h2>
+        <div id="featured-projects-list">Loading featured projects...</div>
+    </section>
 
     <!-- News Section for Latest Releases -->
     <section id="news">
@@ -186,8 +191,182 @@
             }
         }
 
+        const featuredList = document.getElementById('featured-projects-list');
+
+        async function fetchProjects() {
+            featuredList.innerHTML = ''; // Clear loading text
+
+            try {
+                const response = await fetch('https://api.github.com/users/jacobcargen/repos');
+                const repos = await response.json();
+
+                for (const repo of repos) {
+                    const defaultBranch = repo.default_branch;
+                    const projectMdUrl = `https://raw.githubusercontent.com/jacobcargen/${repo.name}/${defaultBranch}/project.md`;
+                    const downloadsLinksUrl = `https://raw.githubusercontent.com/jacobcargen/${repo.name}/${defaultBranch}/downloads_links.txt`;
+                    const featuredMdUrl = `https://raw.githubusercontent.com/jacobcargen/${repo.name}/${defaultBranch}/featured.md`;
+
+                    // Check if project.md file exists
+                    const projectMdResponse = await fetch(projectMdUrl);
+                    const featuredMdResponse = await fetch(featuredMdUrl);
+                    if ((projectMdResponse.ok) && featuredMdResponse.ok) {
+                        const projectText = await projectMdResponse.text();
+
+                        const projectDiv = document.createElement('div');
+                        projectDiv.className = 'project';
+
+                        // Project title and GitHub link
+                        const projectTitle = document.createElement('h3');
+                        projectTitle.innerHTML = `<a>${repo.name}</a>`;
+                        projectDiv.appendChild(projectTitle);
+
+                        const projectDescription = document.createElement('div');
+                        projectDescription.className = 'markdown-content';
+                        projectDescription.innerHTML = marked.parse(projectText);
+                        projectDiv.appendChild(projectDescription);
+
+                        // GitHub Pages link if it exists
+                        if (repo.has_pages) {
+                            const pagesLink = document.createElement('a');
+                            pagesLink.href = `https://${repo.owner.login}.github.io/${repo.name}`;
+                            pagesLink.target = '_blank';
+                            pagesLink.textContent = 'Project Page';
+                            projectDiv.appendChild(pagesLink);
+                            projectDiv.appendChild(document.createElement('br'));
+                        }
+
+                        // Source link
+                        const sourceLink = document.createElement('a');
+                        sourceLink.href = repo.html_url;
+                        sourceLink.target = '_blank';
+                        sourceLink.textContent = 'Source';
+                        projectDiv.appendChild(sourceLink);
+
+                        // Check if downloads_links.txt exists
+                        const downloadsLinksResponse = await fetch(downloadsLinksUrl);
+                        if (downloadsLinksResponse.ok) {
+                            const downloadsText = await downloadsLinksResponse.text();
+                            const downloadLinks = document.createElement('div');
+                            downloadLinks.className = 'downloads';
+
+                            // Parse each line in downloads_links.txt
+                            downloadsText.split('\n').forEach(line => {
+                                const match = line.match(/^(.+?)="(.+?)"$/);
+                                if (match) {
+                                    const [ , name, url ] = match;
+                                    const downloadLink = document.createElement('a');
+                                    downloadLink.href = url;
+                                    downloadLink.target = '_blank';
+                                    downloadLink.textContent = name;
+                                    downloadLinks.appendChild(downloadLink);
+                                    downloadLinks.appendChild(document.createElement('br'));
+                                }
+                            });
+
+                            projectDiv.appendChild(downloadLinks);
+                        }
+
+                        featuredList.appendChild(projectDiv);
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching projects:', error);
+            }
+        }
+        async function fetchMods() {
+
+            try {
+                const response = await fetch('https://api.github.com/users/jacobcargen/repos');
+                const repos = await response.json();
+
+                for (const repo of repos) {
+                    const defaultBranch = repo.default_branch;
+                    const modMdUrl = `https://raw.githubusercontent.com/jacobcargen/${repo.name}/${defaultBranch}/mod.md`;
+                    const downloadsLinksUrl = `https://raw.githubusercontent.com/jacobcargen/${repo.name}/${defaultBranch}/downloads_links.txt`;
+                    const featuredMdUrl = `https://raw.githubusercontent.com/jacobcargen/${repo.name}/${defaultBranch}/featured.md`;
+
+                    // Check if mod.md file exists
+                    const modMdResponse = await fetch(modMdUrl);
+                    const featuredMdResponse = await fetch(featuredMdUrl);
+                    if (modMdResponse.ok && featuredMdResponse.ok) {
+                        const modText = await modMdResponse.text();
+
+                        const modDiv = document.createElement('div');
+                        modDiv.className = 'mod';
+
+                        // Mod title
+                        const modTitle = document.createElement('h3');
+                        modTitle.textContent = repo.name;
+                        modDiv.appendChild(modTitle);
+
+                        const modDescription = document.createElement('div');
+                        modDescription.className = 'markdown-content';
+                        modDescription.innerHTML = marked.parse(modText);
+                        modDiv.appendChild(modDescription);
+
+                        // Links container
+                        const linksDiv = document.createElement('div');
+                        linksDiv.className = 'mt-3';
+
+                        // GitHub Pages link if it exists
+                        if (repo.has_pages) {
+                            const pagesLink = document.createElement('a');
+                            pagesLink.href = `https://${repo.owner.login}.github.io/${repo.name}`;
+                            pagesLink.target = '_blank';
+                            pagesLink.textContent = 'Mod Page';
+                            linksDiv.appendChild(pagesLink);
+                            linksDiv.appendChild(document.createTextNode(' | '));
+                        }
+
+                        // Source link
+                        const sourceLink = document.createElement('a');
+                        sourceLink.href = repo.html_url;
+                        sourceLink.target = '_blank';
+                        sourceLink.textContent = 'Source';
+                        linksDiv.appendChild(sourceLink);
+
+                        modDiv.appendChild(linksDiv);
+
+                        // Check if downloads_links.txt exists
+                        const downloadsLinksResponse = await fetch(downloadsLinksUrl);
+                        if (downloadsLinksResponse.ok) {
+                            const downloadsText = await downloadsLinksResponse.text();
+                            const downloadLinks = document.createElement('div');
+                            downloadLinks.className = 'downloads mt-2';
+
+                            // Parse each line in downloads_links.txt
+                            const lines = downloadsText.split('\n').filter(line => line.trim());
+                            lines.forEach((line, index) => {
+                                const match = line.match(/^(.+?)="(.+?)"$/);
+                                if (match) {
+                                    const [ , name, url ] = match;
+                                    const downloadLink = document.createElement('a');
+                                    downloadLink.href = url;
+                                    downloadLink.target = '_blank';
+                                    downloadLink.textContent = name;
+                                    downloadLinks.appendChild(downloadLink);
+                                    if (index < lines.length - 1) {
+                                        downloadLinks.appendChild(document.createTextNode(' | '));
+                                    }
+                                }
+                            });
+
+                            modDiv.appendChild(downloadLinks);
+                        }
+
+                        featuredList.appendChild(modDiv);
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching mods:', error);
+            }
+        }
+
         // Fetch the latest releases when the page loads
         fetchLatestReleases();
+
+        fetchProjects();
+        fetchMods();
     </script>
 </body>
 </html>
